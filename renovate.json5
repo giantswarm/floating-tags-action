@@ -1,45 +1,45 @@
 {
-  "extends": [
-    "github>giantswarm/renovate-presets:default.json5",
-    "github>giantswarm/renovate-presets:disable-ansible.json5",
-    "github>giantswarm/renovate-presets:disable-kustomize.json5",
-    "group:allNonMajor"
+  extends: [
+    'github>giantswarm/renovate-presets:default.json5',
+    'github>giantswarm/renovate-presets:disable-ansible.json5',
+    'github>giantswarm/renovate-presets:disable-kustomize.json5',
+    'group:allNonMajor',
   ],
-  "packageRules": [
+  packageRules: [
     {
-      "matchPackagePatterns": [
-        "node",
+      groupName: 'node',
+      matchPackageNames: [
+        '/node/',
       ],
-      "groupName": "node",
     },
     {
-      "excludePackageNames": [
-        "typescript",
+      groupName: 'eslint',
+      matchPackageNames: [
+        '!typescript',
+        '/eslint/',
       ],
-      "matchPackagePatterns": [
-        "eslint",
-      ],
-      "groupName": "eslint",
     },
     {
-      "matchPackageNames": [
-        "typescript",
+      matchPackageNames: [
+        'typescript',
       ],
-      "groupName": "typescript",
+      groupName: 'typescript',
     },
     {
-      "excludePackageNames": [
-        "typescript",
+      matchDepTypes: [
+        'dependencies',
       ],
-      "excludePackagePatterns": [
-        "eslint",
+      groupName: 'JS dependencies',
+      matchPackageNames: [
+        '!typescript',
+        '!/eslint/',
       ],
-      "matchDepTypes": ["dependencies"],
-      "groupName": "JS dependencies",
     },
     {
-      "matchManagers": ["github-actions"],
-      "groupName": "GitHub Actions dependencies",
+      matchManagers: [
+        'github-actions',
+      ],
+      groupName: 'GitHub Actions dependencies',
     },
   ],
 }

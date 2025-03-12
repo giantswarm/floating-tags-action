@@ -30389,7 +30389,7 @@ async function main() {
         const tagsToPush = new Array();
         for (const [major, versionTag] of latestForMajor) {
             if (dryRun) {
-                core.info(`[dry-run] Would move v${major} tag to ${versionTag}`);
+                core.info(`[dry-run] Would move tag 'v${major}' to point to '${versionTag}'`);
             }
             else {
                 core.info(`Moving tag 'v${major}' to '${versionTag}'`);
@@ -30398,7 +30398,7 @@ async function main() {
             tagsToPush.push(`v${major}`);
         }
         if (dryRun) {
-            core.info(`[dry-run] Would push these tags: ${tagsToPush.join(" ")}`);
+            core.info(`[dry-run] Summary - would push these tags: ${tagsToPush.join(" ")}`);
         }
         else {
             core.info(`Pushing tags: ${tagsToPush.join(" ")}`);

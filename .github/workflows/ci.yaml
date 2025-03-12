@@ -6,10 +6,16 @@ jobs:
     name: Lint and check dist
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v4
+      - name: Set up NodeJS
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
         with:
-          node-version: '22'
-      - uses: actions/checkout@v4
+          node-version: '20'
+      - name: Clone source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - run: yarn install
       - run: yarn lint
       - run: yarn dist && git diff --exit-code
+      - name: Run action
+        uses: ./
+        with:
+          dry-run: 'true'

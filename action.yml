@@ -2,7 +2,11 @@ name: 'Floating tag'
 description: >
     This action ensures that all tags in the repository in the current path
     have corresponding major version tags.
-inputs: {}
+inputs:
+  dry-run:
+    description: 'When true, only prints the intended changes without applying them.'
+    required: false
+    default: 'false'
 outputs: {}
 runs:
   using: 'node20'

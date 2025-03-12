@@ -19,7 +19,8 @@ force-pushed.
 
 ## Inputs
 
-This action doesn't have any inputs.
+- `dry-run`: If set to `"true"`, the action will only print the tags that would be
+  created/modified and do nothing else. Default is `"false"`.
 
 ## Outputs
 

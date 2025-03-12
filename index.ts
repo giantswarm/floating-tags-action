@@ -8,6 +8,9 @@ async function bash(command: string, options?: exec.ExecOptions) {
 
 async function main(): Promise<void> {
   try {
+    // Read dry-run input from action configuration.
+    const dryRun: boolean = core.getInput('dry-run').toLowerCase() === 'true'
+
     await bash('git pull --depth=1 --all --tags')
     await bash('git config --local user.email "action@github.com"')
     await bash('git config --local user.name "GitHub Action"')
@@ -17,16 +20,30 @@ async function main(): Promise<void> {
 
     const tagsToPush = new Array<string>()
     for (const [major, versionTag] of latestForMajor) {
-      await bash(`git tag --force -a -m 'Move v${major} tag to ${versionTag}' v${major} ${versionTag}`)
+      if (dryRun) {
+        core.info(`[dry-run] Would move tag 'v${major}' to point to '${versionTag}'`)
+      } else {
+        core.info(`Moving tag 'v${major}' to '${versionTag}'`)
+        await bash(`git tag --force -a -m 'Move v${major} tag to ${versionTag}' v${major} ${versionTag}`)
+      }
       tagsToPush.push(`v${major}`)
     }
-    await bash(`git push --force --tags origin ${tagsToPush.join(" ")}`)
+
+    if (dryRun) {
+      core.info(`[dry-run] Summary - would push these tags: ${tagsToPush.join(" ")}`)
+    } else {
+      core.info(`Pushing tags: ${tagsToPush.join(" ")}`)
+      await bash(`git push --force --tags origin ${tagsToPush.join(" ")}`)
+    }
+
   } catch (error) {
     core.setFailed((error as Error)?.message)
   }
 }
 
-/** @returns an array of tuples of a major number of the version and its latest corresponding version tag. */
+/**
+ * @returns an array of tuples of a major number of the version and its latest corresponding version tag.
+ */
 function getLatestForMajor(versionTags: string[]): [number, string][] {
   const latestForMajor = new Map<number, string>()
 
@@ -52,7 +69,9 @@ function getLatestForMajor(versionTags: string[]): [number, string][] {
   return ret
 }
 
-/** @returns tags from the current git repository matching v*.*.* glob. */
+/**
+ * @returns tags from the current git repository matching v*.*.* glob.
+ */
 async function getVersionTags(): Promise<string[]> {
   const tags = new Array<string>()
   

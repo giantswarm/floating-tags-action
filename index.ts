@@ -23,7 +23,7 @@ async function main(): Promise<void> {
       if (dryRun) {
         core.info(`[dry-run] Would move v${major} tag to ${versionTag}`)
       } else {
-        core.info(`Moving tag 'v${major}' tag to '${versionTag}'`)
+        core.info(`Moving tag 'v${major}' to '${versionTag}'`)
         await bash(`git tag --force -a -m 'Move v${major} tag to ${versionTag}' v${major} ${versionTag}`)
       }
       tagsToPush.push(`v${major}`)

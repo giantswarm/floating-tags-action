@@ -30380,6 +30380,7 @@ async function bash(command, options) {
 }
 async function main() {
     try {
+        const dryRun = core.getInput('dry-run').toLowerCase() === 'true';
         await bash('git pull --depth=1 --all --tags');
         await bash('git config --local user.email "action@github.com"');
         await bash('git config --local user.name "GitHub Action"');
@@ -30387,10 +30388,22 @@ async function main() {
         const latestForMajor = getLatestForMajor(versionTags);
         const tagsToPush = new Array();
         for (const [major, versionTag] of latestForMajor) {
-            await bash(`git tag --force -a -m 'Move v${major} tag to ${versionTag}' v${major} ${versionTag}`);
+            if (dryRun) {
+                core.info(`[dry-run] Would move v${major} tag to ${versionTag}`);
+            }
+            else {
+                core.info(`Moving tag 'v${major}' tag to '${versionTag}'`);
+                await bash(`git tag --force -a -m 'Move v${major} tag to ${versionTag}' v${major} ${versionTag}`);
+            }
             tagsToPush.push(`v${major}`);
         }
-        await bash(`git push --force --tags origin ${tagsToPush.join(" ")}`);
+        if (dryRun) {
+            core.info(`[dry-run] Would push these tags: ${tagsToPush.join(" ")}`);
+        }
+        else {
+            core.info(`Pushing tags: ${tagsToPush.join(" ")}`);
+            await bash(`git push --force --tags origin ${tagsToPush.join(" ")}`);
+        }
     }
     catch (error) {
         core.setFailed(error?.message);

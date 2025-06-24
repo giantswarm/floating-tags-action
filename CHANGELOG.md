@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2025-06-24
 
+- Add dry-run option
+
 ## [1.0.4] - 2025-01-14
 
 - Update dependencies (node etc.)

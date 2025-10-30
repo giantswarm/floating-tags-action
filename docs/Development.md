@@ -2,12 +2,10 @@
 
 To update dependencies and update `./dist` run the following commands.
 
-**Note:** If you use `nvm` to manage NodeJS locally, make sure to select the major version used by the repository. See `actrion.yml` for the right version.
+
 
 ```bash
-# Install yarn
-npm install -g corepack
-yarn set version stable
+alias yarn="docker run -it --rm --name my-yarn-project -v '${PWD}:/usr/src/app:Z' -w /usr/src/app node:24-slim yarn"
 
 # Install dependencies
 yarn install

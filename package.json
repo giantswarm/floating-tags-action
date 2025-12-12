@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/giantswarm/floating-tags-action#readme",
   "dependencies": {
-    "@actions/core": "^1.2.7",
-    "@actions/exec": "^1.0.4",
+    "@actions/core": "^2.0.0",
+    "@actions/exec": "^2.0.0",
     "@actions/tool-cache": "^2.0.0",
     "semver": "^7.6.0"
   },
